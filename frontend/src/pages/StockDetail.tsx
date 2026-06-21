@@ -11,7 +11,8 @@ import type { EventsResponse, NewsArticle } from "../types/news";
 import type { RecommendationResponse } from "../types/recommendation";
 import type { CompanyOverview, PriceBar, Quote } from "../types/stocks";
 
-const RANGES = ["1M", "6M", "1Y", "5Y"] as const;
+// "1Y" and "5Y" require Alpha Vantage premium (outputsize=full) — re-enable when upgraded
+const RANGES = ["1M", "6M"] as const;
 type Range = (typeof RANGES)[number];
 type Tab = "overview" | "news" | "events" | "ai";
 
@@ -41,7 +42,7 @@ export default function StockDetail() {
   const [quote, setQuote] = useState<Quote | null>(null);
   const [overview, setOverview] = useState<CompanyOverview | null>(null);
   const [bars, setBars] = useState<PriceBar[]>([]);
-  const [range, setRange] = useState<Range>("1Y");
+  const [range, setRange] = useState<Range>("1M");
   const [loadingHeader, setLoadingHeader] = useState(true);
   const [loadingChart, setLoadingChart] = useState(true);
   const [error, setError] = useState<string | null>(null);

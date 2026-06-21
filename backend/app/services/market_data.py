@@ -73,7 +73,7 @@ def _fetch(params: dict[str, str]) -> dict:  # type: ignore[type-arg]
     if "Note" in data or "Information" in data:
         msg = data.get("Note") or data.get("Information", "rate limit")
         logger.warning("Alpha Vantage limit hit: %.80s", msg)
-        raise MarketDataUnavailableError("Provider rate limit reached")
+        raise MarketDataUnavailableError(msg)
 
     if "Error Message" in data:
         # Typically: invalid symbol for TIME_SERIES / OVERVIEW endpoints
@@ -155,7 +155,7 @@ def get_daily_history(ticker: str, range_: str = "1Y") -> list[PriceBar]:
             data = _fetch({
                 "function": "TIME_SERIES_DAILY",
                 "symbol": ticker,
-                "outputsize": "full",
+                "outputsize": "compact",
             })
         except MarketDataUnavailableError:
             stale = cache_get_stale(cache_key)
@@ -164,7 +164,7 @@ def get_daily_history(ticker: str, range_: str = "1Y") -> list[PriceBar]:
             else:
                 raise
 
-        if all_bars_raw is None:
+        if all_bars_raw is None and data is not None:
             ts: dict = data.get("Time Series (Daily)", {})  # type: ignore[assignment]
             if not ts:
                 raise TickerNotFoundError(ticker)

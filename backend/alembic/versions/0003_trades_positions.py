@@ -25,7 +25,7 @@ def upgrade() -> None:
         sa.Column("id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("portfolio_id", postgresql.UUID(as_uuid=True), nullable=False),
         sa.Column("ticker", sa.String(20), nullable=False),
-        sa.Column("side", sa.Enum("BUY", "SELL", name="tradeside", create_type=False), nullable=False),
+        sa.Column("side", postgresql.ENUM("BUY", "SELL", name="tradeside", create_type=False), nullable=False),
         sa.Column("quantity", sa.Integer(), nullable=False),
         sa.Column("price", sa.Numeric(precision=20, scale=6), nullable=False),
         sa.Column("total_value", sa.Numeric(precision=20, scale=6), nullable=False),
