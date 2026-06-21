@@ -1,10 +1,10 @@
 import type { ReactNode } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import SearchBar from "./SearchBar";
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = async () => {
@@ -13,25 +13,40 @@ export default function Layout({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center gap-4">
-        <button
-          onClick={() => navigate("/dashboard")}
-          className="text-xl font-bold text-gray-900 shrink-0 hover:text-blue-600 transition-colors"
-        >
-          FinSim
-        </button>
-        <div className="flex-1 max-w-md">
-          <SearchBar />
+    <div className="min-h-screen bg-navy-900">
+      <header className="sticky top-0 z-40 bg-navy-900/80 backdrop-blur-md border-b border-navy-700">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 h-14 flex items-center gap-4">
+          {/* Logo */}
+          <Link
+            to="/dashboard"
+            className="text-lg font-bold shrink-0 bg-gradient-to-r from-mint to-cyan-400 bg-clip-text text-transparent hover:opacity-80 transition-opacity"
+          >
+            FinSim
+          </Link>
+
+          {/* Search */}
+          <div className="flex-1 max-w-sm">
+            <SearchBar />
+          </div>
+
+          {/* Right side */}
+          <div className="ml-auto flex items-center gap-3">
+            {user && (
+              <span className="hidden sm:block text-xs text-slate-500 truncate max-w-[140px]">
+                {user.email}
+              </span>
+            )}
+            <button
+              onClick={() => void handleLogout()}
+              className="text-xs font-medium text-slate-400 hover:text-slate-200 px-3 py-1.5 rounded-lg border border-navy-600 hover:border-navy-500 transition-all duration-200"
+            >
+              Sign out
+            </button>
+          </div>
         </div>
-        <button
-          onClick={() => void handleLogout()}
-          className="text-sm text-gray-500 hover:text-gray-900 transition-colors shrink-0"
-        >
-          Sign out
-        </button>
       </header>
-      <main>{children}</main>
+
+      <main className="animate-fade-in">{children}</main>
     </div>
   );
 }

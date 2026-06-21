@@ -3,7 +3,6 @@ import type { SignificantMoveEvent } from "../types/news";
 const currFmt = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 
 function dateFmt(dateStr: string): string {
-  // Parse as local noon to avoid timezone-shift issues with Date(dateStr)
   return new Date(`${dateStr}T12:00:00`).toLocaleDateString("en-US", {
     weekday: "short",
     month: "short",
@@ -28,25 +27,19 @@ interface Props {
   timeRange: string;
 }
 
-export default function EventCorrelation({
-  events,
-  loading,
-  error,
-  thresholdPct,
-  timeRange,
-}: Props) {
+export default function EventCorrelation({ events, loading, error, thresholdPct, timeRange }: Props) {
   if (loading) {
     return (
-      <div className="space-y-4 animate-pulse">
+      <div className="space-y-3 animate-pulse">
         {[0, 1, 2].map((i) => (
-          <div key={i} className="rounded-xl border border-gray-100 overflow-hidden">
-            <div className="px-4 py-3 bg-gray-50 flex gap-3">
-              <div className="h-6 w-16 bg-gray-200 rounded-full" />
-              <div className="h-6 w-32 bg-gray-200 rounded" />
+          <div key={i} className="rounded-xl border border-navy-700 bg-navy-750 overflow-hidden">
+            <div className="px-4 py-3 bg-navy-700 flex gap-3">
+              <div className="h-6 w-16 bg-navy-600 rounded-full" />
+              <div className="h-6 w-32 bg-navy-600 rounded" />
             </div>
             <div className="px-4 py-3 space-y-2">
-              <div className="h-3 bg-gray-200 rounded w-full" />
-              <div className="h-3 bg-gray-200 rounded w-4/5" />
+              <div className="h-3 bg-navy-700 rounded w-full" />
+              <div className="h-3 bg-navy-700 rounded w-4/5" />
             </div>
           </div>
         ))}
@@ -55,56 +48,54 @@ export default function EventCorrelation({
   }
 
   if (error) {
-    return <p className="text-sm text-red-600 py-6 text-center">{error}</p>;
+    return <p className="text-sm text-pink-400 py-6 text-center">{error}</p>;
   }
 
   if (events.length === 0) {
     return (
-      <p className="text-sm text-gray-500 py-10 text-center">
+      <p className="text-sm text-slate-500 py-10 text-center">
         No single-day moves exceeding {thresholdPct}% found in the {timeRange} range.
       </p>
     );
   }
 
   return (
-    <div className="space-y-4">
-      <p className="text-xs text-gray-400">
+    <div className="space-y-3">
+      <p className="text-xs text-slate-600">
         Top {events.length} move{events.length !== 1 ? "s" : ""} with |daily change| ≥{" "}
-        {thresholdPct}% over the {timeRange} range, ranked by magnitude. News headlines are
-        from ±1–2 days around each event date.
+        {thresholdPct}% over the {timeRange} range, ranked by magnitude. Headlines from ±1–2 days around each event.
       </p>
 
       {events.map((ev, i) => {
         const isUp = ev.direction === "up";
         return (
-          <div key={i} className="rounded-xl border border-gray-100 overflow-hidden">
-            {/* ── Move header ─────────────────────────────── */}
-            <div className="flex items-center gap-3 px-4 py-3 bg-gray-50 border-b border-gray-100">
+          <div key={i} className="rounded-xl border border-navy-700 bg-navy-750 overflow-hidden">
+            {/* Move header */}
+            <div className="flex items-center gap-3 px-4 py-3 bg-navy-800 border-b border-navy-700">
               <span
                 className={`inline-flex items-center px-2.5 py-1 rounded-full text-xs font-bold tabular-nums ${
                   isUp
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
+                    ? "bg-mint/10 text-mint border border-mint/20"
+                    : "bg-pink-400/10 text-pink-400 border border-pink-400/20"
                 }`}
               >
-                {isUp ? "+" : ""}
-                {ev.percent_change.toFixed(2)}%
+                {isUp ? "▲" : "▼"} {isUp ? "+" : ""}{ev.percent_change.toFixed(2)}%
               </span>
-              <span className="text-sm font-medium text-gray-800">{dateFmt(ev.date)}</span>
-              <span className="text-xs text-gray-400 ml-auto">
+              <span className="text-sm font-medium text-slate-300">{dateFmt(ev.date)}</span>
+              <span className="text-xs text-slate-600 ml-auto tabular-nums">
                 Close: {currFmt.format(ev.close_price)}
               </span>
             </div>
 
-            {/* ── Headlines or unavailable notice ─────────── */}
+            {/* Headlines */}
             <div className="px-4 py-3">
               {!ev.news_available ? (
-                <p className="text-xs text-amber-600 italic leading-relaxed">
+                <p className="text-xs text-amber-500/70 italic leading-relaxed">
                   {ev.news_unavailable_reason ??
                     "Historical news is not available for this period on the current data plan."}
                 </p>
               ) : ev.headlines.length === 0 ? (
-                <p className="text-xs text-gray-400 italic">
+                <p className="text-xs text-slate-600 italic">
                   No headlines found around this date.
                 </p>
               ) : (
@@ -115,11 +106,11 @@ export default function EventCorrelation({
                         href={h.url}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="text-xs font-medium text-gray-800 hover:text-blue-600 leading-snug"
+                        className="text-xs font-medium text-slate-400 hover:text-mint leading-snug transition-colors duration-150"
                       >
                         {h.title}
                       </a>
-                      <span className="text-xs text-gray-400">
+                      <span className="text-xs text-slate-600">
                         {h.source} · {relativeTime(h.published_at)}
                       </span>
                     </li>

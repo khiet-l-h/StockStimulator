@@ -13,17 +13,14 @@ export default function SearchBar() {
   const containerRef = useRef<HTMLDivElement>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
-  // Debounced search — fires 400 ms after the user stops typing
   useEffect(() => {
     clearTimeout(debounceRef.current);
-
     const trimmed = query.trim();
     if (trimmed.length === 0) {
       setResults([]);
       setIsOpen(false);
       return;
     }
-
     debounceRef.current = setTimeout(() => {
       setIsFetching(true);
       api
@@ -36,11 +33,9 @@ export default function SearchBar() {
         .catch(() => setResults([]))
         .finally(() => setIsFetching(false));
     }, 400);
-
     return () => clearTimeout(debounceRef.current);
   }, [query]);
 
-  // Close dropdown on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -76,6 +71,16 @@ export default function SearchBar() {
   return (
     <div ref={containerRef} className="relative w-full">
       <div className="relative">
+        {/* Search icon */}
+        <svg
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500 pointer-events-none"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+          strokeWidth={2}
+        >
+          <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
         <input
           type="text"
           value={query}
@@ -83,14 +88,14 @@ export default function SearchBar() {
           onFocus={() => results.length > 0 && setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder="Search ticker or company…"
-          className="w-full pl-4 pr-9 py-2 rounded-lg border border-gray-200 bg-gray-50 focus:bg-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm transition-colors"
+          className="w-full pl-8 pr-8 py-1.5 rounded-lg bg-navy-800 border border-navy-600 text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:ring-1 focus:ring-mint/40 focus:border-mint/50 transition-all duration-200"
           aria-label="Search stocks"
           aria-autocomplete="list"
           aria-expanded={isOpen}
         />
         {isFetching && (
-          <span className="absolute right-3 top-2.5 pointer-events-none">
-            <span className="block w-4 h-4 border-2 border-blue-400 border-t-transparent rounded-full animate-spin" />
+          <span className="absolute right-2.5 top-1/2 -translate-y-1/2 pointer-events-none">
+            <span className="block w-3.5 h-3.5 border-2 border-mint/60 border-t-transparent rounded-full animate-spin" />
           </span>
         )}
       </div>
@@ -98,25 +103,26 @@ export default function SearchBar() {
       {isOpen && results.length > 0 && (
         <ul
           role="listbox"
-          className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-100 rounded-xl shadow-lg z-50 overflow-hidden"
+          className="absolute top-full left-0 right-0 mt-1.5 bg-navy-800 border border-navy-600 rounded-xl shadow-dark-lg z-50 overflow-hidden animate-slide-up"
         >
           {results.map((r, i) => (
             <li key={r.symbol} role="option" aria-selected={i === activeIndex}>
               <button
                 onMouseDown={(e) => {
-                  // prevent input blur before click fires
                   e.preventDefault();
                   navigateTo(r.symbol);
                 }}
-                className={`w-full text-left px-4 py-3 flex items-center gap-3 hover:bg-gray-50 transition-colors ${
-                  i === activeIndex ? "bg-blue-50" : ""
+                className={`w-full text-left px-4 py-2.5 flex items-center gap-3 transition-colors duration-150 ${
+                  i === activeIndex
+                    ? "bg-navy-700 text-slate-100"
+                    : "hover:bg-navy-750 text-slate-300"
                 }`}
               >
-                <span className="font-semibold text-gray-900 w-16 shrink-0 text-sm">
+                <span className="font-semibold text-mint w-14 shrink-0 text-sm">
                   {r.symbol}
                 </span>
-                <span className="text-gray-500 text-sm truncate flex-1">{r.name}</span>
-                <span className="text-xs text-gray-400 shrink-0">{r.region}</span>
+                <span className="text-slate-400 text-sm truncate flex-1">{r.name}</span>
+                <span className="text-xs text-slate-600 shrink-0">{r.region}</span>
               </button>
             </li>
           ))}

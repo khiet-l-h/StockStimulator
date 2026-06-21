@@ -38,42 +38,54 @@ export default function History() {
 
   return (
     <Layout>
-      <div className="max-w-5xl mx-auto px-6 py-10">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 py-10">
+        {/* Header */}
         <div className="mb-8 flex items-center gap-4">
           <div>
-            <h2 className="text-2xl font-semibold text-gray-900">Trade History</h2>
-            <p className="text-gray-500 mt-1 text-sm">All paper trades, newest first</p>
+            <p className="text-xs font-medium text-slate-600 uppercase tracking-widest mb-1">History</p>
+            <h2 className="text-2xl font-bold text-slate-100">Trade History</h2>
+            <p className="text-slate-500 mt-1 text-sm">All paper trades, newest first</p>
           </div>
           <Link
             to="/dashboard"
-            className="ml-auto text-sm text-blue-600 hover:underline font-medium"
+            className="ml-auto text-xs font-medium text-mint hover:text-mint-400 transition-colors flex items-center gap-1.5 border border-navy-600 hover:border-navy-500 px-3 py-2 rounded-lg"
           >
-            ← Portfolio
+            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+            Portfolio
           </Link>
         </div>
 
         {error && (
-          <div className="mb-6 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+          <div className="mb-6 px-4 py-3 rounded-xl bg-pink-400/10 border border-pink-400/20 text-pink-400 text-sm">
             {error}
           </div>
         )}
 
-        <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+        <div className="glass-card shadow-dark overflow-hidden">
           {loading ? (
-            <div className="divide-y divide-gray-50 animate-pulse">
-              {Array.from({ length: 5 }).map((_, i) => (
+            <div className="divide-y divide-navy-750 animate-pulse">
+              {Array.from({ length: 6 }).map((_, i) => (
                 <div key={i} className="px-6 py-4 flex gap-6">
-                  <div className="h-4 bg-gray-200 rounded w-32" />
-                  <div className="h-4 bg-gray-200 rounded w-16 ml-8" />
-                  <div className="h-4 bg-gray-200 rounded w-16" />
-                  <div className="h-4 bg-gray-200 rounded w-20 ml-auto" />
+                  <div className="h-4 bg-navy-700 rounded w-36" />
+                  <div className="h-4 bg-navy-700 rounded w-12" />
+                  <div className="h-4 bg-navy-700 rounded w-10" />
+                  <div className="h-4 bg-navy-700 rounded w-8" />
+                  <div className="h-4 bg-navy-700 rounded w-20 ml-auto" />
+                  <div className="h-4 bg-navy-700 rounded w-24" />
                 </div>
               ))}
             </div>
           ) : !data || data.items.length === 0 ? (
-            <div className="py-16 text-center">
-              <p className="text-gray-500 font-medium">No trades yet</p>
-              <p className="text-gray-400 text-sm mt-1">
+            <div className="py-20 text-center">
+              <div className="w-12 h-12 rounded-2xl bg-navy-750 flex items-center justify-center mx-auto mb-4">
+                <svg className="w-6 h-6 text-slate-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+              </div>
+              <p className="text-slate-400 font-medium">No trades yet</p>
+              <p className="text-slate-600 text-sm mt-1">
                 Search for a stock and place your first paper trade.
               </p>
             </div>
@@ -82,7 +94,7 @@ export default function History() {
               <div className="overflow-x-auto">
                 <table className="w-full text-sm">
                   <thead>
-                    <tr className="text-xs font-medium text-gray-400 uppercase tracking-wide border-b border-gray-50">
+                    <tr className="text-xs font-medium text-slate-600 uppercase tracking-widest border-b border-navy-700">
                       <th className="text-left px-6 py-3">Date</th>
                       <th className="text-left px-4 py-3">Ticker</th>
                       <th className="text-left px-4 py-3">Side</th>
@@ -92,51 +104,48 @@ export default function History() {
                       <th className="text-right px-6 py-3">Realized P&L</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-gray-50">
+                  <tbody>
                     {data.items.map((t) => {
                       const isBuy = t.side === "BUY";
                       const pnl = t.realized_pnl ? parseFloat(t.realized_pnl) : null;
                       return (
-                        <tr key={t.id} className="hover:bg-gray-50 transition-colors">
-                          <td className="px-6 py-4 text-gray-500 text-xs whitespace-nowrap">
+                        <tr
+                          key={t.id}
+                          className="border-b border-navy-750 hover:bg-navy-750 transition-colors duration-150"
+                        >
+                          <td className="px-6 py-4 text-slate-500 text-xs whitespace-nowrap tabular-nums">
                             {dateFmt(t.executed_at)}
                           </td>
                           <td className="px-4 py-4">
                             <Link
                               to={`/stocks/${t.ticker}`}
-                              className="font-semibold text-blue-600 hover:underline"
+                              className="font-bold text-mint hover:text-mint-400 transition-colors"
                             >
                               {t.ticker}
                             </Link>
                           </td>
                           <td className="px-4 py-4">
-                            <span
-                              className={`inline-block px-2 py-0.5 rounded text-xs font-semibold ${
-                                isBuy
-                                  ? "bg-green-50 text-green-700"
-                                  : "bg-red-50 text-red-700"
-                              }`}
-                            >
+                            <span className={isBuy ? "tag-mint" : "tag-pink"}>
                               {t.side}
                             </span>
                           </td>
-                          <td className="text-right px-4 py-4 text-gray-700">{t.quantity}</td>
-                          <td className="text-right px-4 py-4 text-gray-700">
+                          <td className="text-right px-4 py-4 text-slate-300 tabular-nums">{t.quantity}</td>
+                          <td className="text-right px-4 py-4 text-slate-400 tabular-nums">
                             {currFmt.format(parseFloat(t.price))}
                           </td>
-                          <td className="text-right px-4 py-4 font-medium text-gray-900">
+                          <td className="text-right px-4 py-4 font-semibold text-slate-200 tabular-nums">
                             {currFmt.format(parseFloat(t.total_value))}
                           </td>
-                          <td className="text-right px-6 py-4">
+                          <td className="text-right px-6 py-4 tabular-nums">
                             {pnl !== null ? (
                               <span
-                                className={`font-medium ${pnl >= 0 ? "text-green-600" : "text-red-600"}`}
+                                className={`font-semibold ${pnl >= 0 ? "text-mint" : "text-pink-400"}`}
                               >
                                 {pnl >= 0 ? "+" : ""}
                                 {currFmt.format(pnl)}
                               </span>
                             ) : (
-                              <span className="text-gray-300">—</span>
+                              <span className="text-slate-700">—</span>
                             )}
                           </td>
                         </tr>
@@ -146,24 +155,23 @@ export default function History() {
                 </table>
               </div>
 
-              {/* Pagination */}
               {data.pages > 1 && (
-                <div className="flex items-center justify-between px-6 py-4 border-t border-gray-50">
-                  <p className="text-xs text-gray-500">
+                <div className="flex items-center justify-between px-6 py-4 border-t border-navy-700">
+                  <p className="text-xs text-slate-500 tabular-nums">
                     {data.total} trade{data.total !== 1 ? "s" : ""} · page {page} of {data.pages}
                   </p>
                   <div className="flex gap-2">
                     <button
                       onClick={() => setPage((p) => Math.max(1, p - 1))}
                       disabled={page === 1}
-                      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-200 disabled:text-gray-300 hover:bg-gray-50 transition-colors"
+                      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-navy-600 text-slate-400 hover:border-navy-500 hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
                     >
                       Previous
                     </button>
                     <button
                       onClick={() => setPage((p) => Math.min(data.pages, p + 1))}
                       disabled={page === data.pages}
-                      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-gray-200 disabled:text-gray-300 hover:bg-gray-50 transition-colors"
+                      className="px-3 py-1.5 text-xs font-medium rounded-lg border border-navy-600 text-slate-400 hover:border-navy-500 hover:text-slate-200 disabled:opacity-30 disabled:cursor-not-allowed transition-all duration-200"
                     >
                       Next
                     </button>

@@ -16,7 +16,7 @@ export default function Login() {
     }
   }, [isAuthenticated, isLoading, navigate]);
 
-  if (isLoading) return <div className="min-h-screen" />;
+  if (isLoading) return <div className="min-h-screen bg-navy-900" />;
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
@@ -33,61 +33,81 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
+    <div className="min-h-screen bg-navy-900 flex items-center justify-center px-4 relative overflow-hidden">
+      {/* Background glow blobs */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-mint/5 rounded-full blur-3xl" />
+        <div className="absolute -bottom-40 -right-20 w-80 h-80 bg-violet-500/5 rounded-full blur-3xl" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-cyan-500/3 rounded-full blur-3xl" />
+      </div>
+
+      <div className="w-full max-w-md relative animate-slide-up">
+        {/* Logo */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-900">FinSim</h1>
-          <p className="text-gray-500 mt-1 text-sm">AI-powered paper trading — no real money involved</p>
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-mint via-cyan-400 to-mint bg-clip-text text-transparent mb-2">
+            FinSim
+          </h1>
+          <p className="text-slate-500 text-sm">AI-powered paper trading · no real money involved</p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-8">
-          <h2 className="text-xl font-semibold text-gray-800 mb-6">Sign in</h2>
+        {/* Card */}
+        <div className="bg-navy-800 border border-navy-700 rounded-2xl p-8 shadow-dark-lg">
+          <h2 className="text-lg font-semibold text-slate-100 mb-6">Sign in to your account</h2>
 
           {error && (
-            <div className="mb-5 px-4 py-3 rounded-lg bg-red-50 border border-red-200 text-red-700 text-sm">
+            <div className="mb-5 px-4 py-3 rounded-xl bg-pink-400/10 border border-pink-400/20 text-pink-400 text-sm animate-fade-in">
               {error}
             </div>
           )}
 
           <form onSubmit={(e) => void handleSubmit(e)} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Email</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1.5 uppercase tracking-wide">
+                Email
+              </label>
               <input
                 type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoComplete="email"
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="input-dark"
                 placeholder="you@example.com"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1.5">Password</label>
+              <label className="block text-xs font-medium text-slate-400 mb-1.5 uppercase tracking-wide">
+                Password
+              </label>
               <input
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 autoComplete="current-password"
-                className="w-full px-4 py-2.5 rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-sm"
+                className="input-dark"
                 placeholder="Your password"
               />
             </div>
 
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-300 text-white font-medium rounded-lg transition-colors text-sm mt-2"
-            >
-              {isSubmitting ? "Signing in…" : "Sign in"}
-            </button>
+            <div className="pt-1">
+              <button type="submit" disabled={isSubmitting} className="btn-mint">
+                {isSubmitting ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <span className="w-4 h-4 border-2 border-navy-900 border-t-transparent rounded-full animate-spin" />
+                    Signing in…
+                  </span>
+                ) : (
+                  "Sign in"
+                )}
+              </button>
+            </div>
           </form>
 
-          <p className="mt-6 text-center text-sm text-gray-500">
+          <p className="mt-6 text-center text-sm text-slate-500">
             Don&apos;t have an account?{" "}
-            <Link to="/signup" className="text-blue-600 hover:underline font-medium">
+            <Link to="/signup" className="text-mint hover:text-mint-400 font-medium transition-colors">
               Create one
             </Link>
           </p>

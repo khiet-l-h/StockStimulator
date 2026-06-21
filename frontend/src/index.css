@@ -1,3 +1,66 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    @apply bg-navy-900 text-slate-200 antialiased;
+  }
+
+  ::selection {
+    @apply bg-mint/20 text-mint;
+  }
+
+  ::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-navy-900;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-navy-600 rounded-full;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-navy-500;
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-navy-800 border border-navy-700 rounded-2xl;
+  }
+  .glass-card-elevated {
+    @apply bg-navy-750 border border-navy-600 rounded-2xl;
+  }
+  .input-dark {
+    @apply w-full px-4 py-2.5 rounded-xl bg-navy-750 border border-navy-600
+           text-slate-100 placeholder-slate-500 text-sm
+           focus:outline-none focus:ring-2 focus:ring-mint/40 focus:border-mint/60
+           transition-all duration-200;
+  }
+  .btn-mint {
+    @apply w-full py-2.5 px-4 rounded-xl font-semibold text-sm text-navy-900
+           bg-mint hover:bg-mint-400 active:bg-mint-600
+           shadow-glow-mint-sm hover:shadow-glow-mint
+           transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-ghost {
+    @apply py-2 px-4 rounded-xl text-sm font-medium text-slate-400
+           border border-navy-600 hover:border-navy-500 hover:text-slate-200
+           transition-all duration-200;
+  }
+  .tag-mint {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
+           bg-mint/10 text-mint border border-mint/20;
+  }
+  .tag-pink {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
+           bg-pink-400/10 text-pink-400 border border-pink-400/20;
+  }
+  .tag-violet {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-semibold
+           bg-violet-400/10 text-violet-400 border border-violet-400/20;
+  }
+}
