@@ -3,41 +3,39 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    font-size: 17px;
+  }
+
   body {
     font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    @apply bg-navy-900 text-slate-200 antialiased;
+    @apply bg-white dark:bg-navy-900 text-slate-900 dark:text-slate-200 antialiased;
   }
 
   ::selection {
     @apply bg-mint/20 text-mint;
   }
 
-  ::-webkit-scrollbar {
-    width: 5px;
-    height: 5px;
-  }
-  ::-webkit-scrollbar-track {
-    @apply bg-navy-900;
-  }
-  ::-webkit-scrollbar-thumb {
-    @apply bg-navy-600 rounded-full;
-  }
-  ::-webkit-scrollbar-thumb:hover {
-    @apply bg-navy-500;
-  }
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { @apply bg-slate-100 dark:bg-navy-900; }
+  ::-webkit-scrollbar-thumb { @apply bg-slate-300 dark:bg-navy-600 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-slate-400 dark:bg-navy-500; }
 }
 
 @layer components {
   .glass-card {
-    @apply bg-navy-800 border border-navy-700 rounded-2xl;
+    @apply bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-700 rounded-2xl;
   }
   .glass-card-elevated {
-    @apply bg-navy-750 border border-navy-600 rounded-2xl;
+    @apply bg-slate-50 dark:bg-navy-750 border border-slate-200 dark:border-navy-600 rounded-2xl;
   }
   .input-dark {
-    @apply w-full px-4 py-2.5 rounded-xl bg-navy-750 border border-navy-600
-           text-slate-100 placeholder-slate-500 text-sm
-           focus:outline-none focus:ring-2 focus:ring-mint/40 focus:border-mint/60
+    @apply w-full px-4 py-2.5 rounded-xl
+           bg-slate-100 dark:bg-navy-750
+           border border-slate-300 dark:border-navy-600
+           text-slate-900 dark:text-slate-100
+           placeholder-slate-400 dark:placeholder-slate-500
+           text-sm focus:outline-none focus:ring-2 focus:ring-mint/40 focus:border-mint/60
            transition-all duration-200;
   }
   .btn-mint {
@@ -47,8 +45,11 @@
            transition-all duration-200 disabled:opacity-40 disabled:cursor-not-allowed;
   }
   .btn-ghost {
-    @apply py-2 px-4 rounded-xl text-sm font-medium text-slate-400
-           border border-navy-600 hover:border-navy-500 hover:text-slate-200
+    @apply py-2 px-4 rounded-xl text-sm font-medium
+           text-slate-600 dark:text-slate-400
+           border border-slate-300 dark:border-navy-600
+           hover:border-slate-400 dark:hover:border-navy-500
+           hover:text-slate-800 dark:hover:text-slate-200
            transition-all duration-200;
   }
   .tag-mint {

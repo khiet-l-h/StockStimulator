@@ -88,7 +88,7 @@ export default function SearchBar() {
           onFocus={() => results.length > 0 && setIsOpen(true)}
           onKeyDown={handleKeyDown}
           placeholder="Search ticker or company…"
-          className="w-full pl-8 pr-8 py-1.5 rounded-lg bg-navy-800 border border-navy-600 text-slate-200 placeholder-slate-600 text-sm focus:outline-none focus:ring-1 focus:ring-mint/40 focus:border-mint/50 transition-all duration-200"
+          className="w-full pl-8 pr-8 py-1.5 rounded-lg bg-slate-100 dark:bg-navy-800 border border-slate-300 dark:border-navy-600 text-slate-900 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-600 text-sm focus:outline-none focus:ring-1 focus:ring-mint/40 focus:border-mint/50 transition-all duration-200"
           aria-label="Search stocks"
           aria-autocomplete="list"
           aria-expanded={isOpen}
@@ -103,7 +103,7 @@ export default function SearchBar() {
       {isOpen && results.length > 0 && (
         <ul
           role="listbox"
-          className="absolute top-full left-0 right-0 mt-1.5 bg-navy-800 border border-navy-600 rounded-xl shadow-dark-lg z-50 overflow-hidden animate-slide-up"
+          className="absolute top-full left-0 right-0 mt-1.5 bg-white dark:bg-navy-800 border border-slate-200 dark:border-navy-600 rounded-xl shadow-dark-lg z-50 overflow-hidden animate-slide-up"
         >
           {results.map((r, i) => (
             <li key={r.symbol} role="option" aria-selected={i === activeIndex}>
@@ -114,15 +114,15 @@ export default function SearchBar() {
                 }}
                 className={`w-full text-left px-4 py-2.5 flex items-center gap-3 transition-colors duration-150 ${
                   i === activeIndex
-                    ? "bg-navy-700 text-slate-100"
-                    : "hover:bg-navy-750 text-slate-300"
+                    ? "bg-slate-100 dark:bg-navy-700 text-slate-900 dark:text-slate-100"
+                    : "hover:bg-slate-50 dark:hover:bg-navy-750 text-slate-700 dark:text-slate-300"
                 }`}
               >
                 <span className="font-semibold text-mint w-14 shrink-0 text-sm">
                   {r.symbol}
                 </span>
-                <span className="text-slate-400 text-sm truncate flex-1">{r.name}</span>
-                <span className="text-xs text-slate-600 shrink-0">{r.region}</span>
+                <span className="text-slate-500 dark:text-slate-400 text-sm truncate flex-1">{r.name}</span>
+                <span className="text-xs text-slate-400 dark:text-slate-600 shrink-0">{r.region}</span>
               </button>
             </li>
           ))}

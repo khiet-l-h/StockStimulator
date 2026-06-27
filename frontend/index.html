@@ -1,6 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="dark">
   <head>
+    <script>
+      (function () {
+        const t = localStorage.getItem("finsim-theme");
+        if (t === "light") document.documentElement.classList.remove("dark");
+      })();
+    </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FinSim — AI Paper Trading</title>
