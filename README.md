@@ -1,4 +1,4 @@
-# FinSim — AI-Powered Paper Trading Platform
+# Stock Stimulation — AI-Powered Paper Trading Platform
 
 Educational investment simulation. No real money is ever involved.
 
