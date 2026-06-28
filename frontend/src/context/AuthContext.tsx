@@ -9,6 +9,7 @@ interface AuthState {
   isLoading: boolean;
   login: (email: string, password: string) => Promise<void>;
   signup: (email: string, password: string) => Promise<void>;
+  googleLogin: (accessToken: string) => Promise<void>;
   logout: () => Promise<void>;
   /** Update the displayed cash balance after a trade without a full /me refetch. */
   setCashBalance: (newBalance: string) => void;
@@ -54,6 +55,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setUser(me);
   };
 
+  const googleLogin = async (accessToken: string): Promise<void> => {
+    const res = await api.googleAuth(accessToken);
+    localStorage.setItem("access_token", res.access_token);
+    const me = await api.me();
+    setUser(me);
+  };
+
   const logout = async (): Promise<void> => {
     try {
       await api.logout();
@@ -71,7 +79,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   return (
     <AuthContext.Provider
-      value={{ user, isAuthenticated: !!user, isLoading, login, signup, logout, setCashBalance }}
+      value={{ user, isAuthenticated: !!user, isLoading, login, signup, googleLogin, logout, setCashBalance }}
     >
       {children}
     </AuthContext.Provider>

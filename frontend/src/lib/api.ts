@@ -63,6 +63,13 @@ export const api = {
     return request<void>("/api/auth/logout", { method: "POST" });
   },
 
+  googleAuth(accessToken: string): Promise<TokenResponse> {
+    return request<TokenResponse>("/api/auth/google", {
+      method: "POST",
+      body: JSON.stringify({ access_token: accessToken }),
+    });
+  },
+
   // ── Stocks ──────────────────────────────────────────────────────────────
 
   searchStocks(query: string): Promise<SearchResult[]> {
